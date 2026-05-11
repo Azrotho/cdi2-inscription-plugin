@@ -1,0 +1,5 @@
+name: cdi2-inscription-plugin
+version: 1.0.0
+main: fr.citedesiles.inscriptionplugin.InscriptionPlugin
+api-version: '1.21'
+author: Azrotho
