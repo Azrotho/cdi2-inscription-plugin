@@ -1,0 +1,34 @@
+# Configuration du plugin d'inscription CDI2
+api:
+  # URL de l'API cdi2-core-server
+  url: "http://localhost:3000"
+  # Token admin pour les appels à l'API
+  token: "bipboup"
+
+# Messages (utilisez & pour les couleurs)
+messages:
+  prefix: "&8[&bCDI2&8]&r"
+  link:
+    success: "&aTon code de vérification est : &6&l%code%"
+    instructions: "&7Utilise ce code sur Discord pour lier ton compte. &8(Expire dans 10 minutes)"
+    already-linked: "&cTon compte est déjà lié à un compte Discord ! Utilise &e/unlink &cpour te délier d'abord."
+    error: "&cUne erreur est survenue. Réessaie plus tard."
+    network-error: "&cL'API est injoignable. Réessaie plus tard."
+  unlink:
+    confirm-needed: "&eEs-tu sûr de vouloir te délier ? Tape &c/unlink confirm &epour confirmer."
+    success: "&aTon compte a bien été délié."
+    not-linked: "&cTon compte n'est pas lié à un compte Discord."
+    error: "&cUne erreur est survenue lors du déliage. Réessaie plus tard."
+    no-pending: "&cTu n'as pas de demande de déliage en attente. Tape d'abord &e/unlink&c."
+  no-permission: "&cTu n'as pas la permission d'utiliser cette commande."
+  player-only: "&cCette commande ne peut être utilisée que par un joueur."
+  protection:
+    welcome: "&7Bienvenue ! Tu peux faire /link pour lier ton compte à Discord afin de participer à la cité des îles."
+
+# Coordonnées du spawn où les non-OP sont téléportés
+spawn:
+  x: 0.0
+  y: 90.0
+  z: 0.0
+  yaw: 0.0
+  pitch: 0.0

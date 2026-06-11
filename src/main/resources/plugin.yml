@@ -3,3 +3,11 @@ version: 1.0.0
 main: fr.citedesiles.inscriptionplugin.InscriptionPlugin
 api-version: '1.21'
 author: Azrotho
+
+commands:
+  link:
+    description: Obtient un code de vérification pour lier son compte Discord
+    usage: /link
+  unlink:
+    description: Se délier de son compte Discord
+    usage: /unlink [confirm]

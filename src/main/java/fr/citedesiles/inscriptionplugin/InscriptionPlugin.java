@@ -1,15 +1,67 @@
 package fr.citedesiles.inscriptionplugin;
 
+import fr.citedesiles.coreplugin.CoreCDI;
+import fr.citedesiles.inscriptionplugin.command.LinkCommand;
+import fr.citedesiles.inscriptionplugin.command.UnlinkCommand;
+import fr.citedesiles.inscriptionplugin.config.PluginConfig;
+import fr.citedesiles.inscriptionplugin.listener.PlayerJoinListener;
+import fr.citedesiles.inscriptionplugin.listener.ProtectionListener;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class InscriptionPlugin extends JavaPlugin {
+
+    private PluginConfig config;
+    private CoreCDI api;
+
     @Override
     public void onEnable() {
-        getLogger().info("InscriptionPlugin a été activé !");
+        // Charger la configuration
+        config = new PluginConfig(this);
+
+        // Enregistrer les listeners de protection (indépendants de l'API)
+        getServer().getPluginManager().registerEvents(new ProtectionListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(config), this);
+
+        String apiUrl = config.getApiUrl();
+        String apiToken = config.getApiToken();
+
+        if (apiToken.isEmpty()) {
+            getLogger().warning("Le token API est vide ! Configure 'api.token' dans config.yml");
+            getLogger().warning("Les commandes /link et /unlink ne fonctionneront pas.");
+            return;
+        }
+
+        // Initialiser le client API
+        api = new CoreCDI(apiUrl, apiToken);
+
+        // Tester la connexion à l'API
+        try {
+            if (api.ping()) {
+                getLogger().info("Connecté à l'API CDI2 : " + apiUrl);
+            }
+        } catch (CoreCDI.ApiException e) {
+            getLogger().warning("Impossible de contacter l'API CDI2 : " + e.getMessage());
+            getLogger().warning("Les commandes /link et /unlink risquent de ne pas fonctionner.");
+        }
+
+        // Enregistrer les commandes
+        getCommand("link").setExecutor(new LinkCommand(api, config));
+        getCommand("unlink").setExecutor(new UnlinkCommand(api, config));
+
+        getLogger().info("InscriptionPlugin activé !");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("InscriptionPlugin a été désactivé !");
+        getLogger().info("InscriptionPlugin désactivé !");
+    }
+
+    public PluginConfig getPluginConfig() {
+        return config;
+    }
+
+    public CoreCDI getApi() {
+        return api;
     }
 }
