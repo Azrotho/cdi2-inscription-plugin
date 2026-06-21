@@ -3,6 +3,7 @@ package fr.citedesiles.inscriptionplugin.command;
 import fr.citedesiles.coreplugin.CoreCDI;
 import fr.citedesiles.inscriptionplugin.config.PluginConfig;
 import fr.citedesiles.inscriptionplugin.util.MessageUtil;
+import fr.citedesiles.inscriptionplugin.util.TeamDisplayManager;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -55,6 +56,7 @@ public class UnlinkCommand implements CommandExecutor {
             try {
                 api.deletePlayer(uuid.toString());
                 MessageUtil.sendPrefixed(player, prefix, config.getUnlinkSuccess());
+                TeamDisplayManager.updateDisplay(player, api);
             } catch (CoreCDI.ApiException e) {
                 if (e.getStatusCode() == 404) {
                     MessageUtil.sendPrefixed(player, prefix, config.getUnlinkNotLinked());
