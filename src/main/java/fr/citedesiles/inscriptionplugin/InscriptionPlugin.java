@@ -7,6 +7,7 @@ import fr.citedesiles.inscriptionplugin.config.PluginConfig;
 import fr.citedesiles.inscriptionplugin.listener.ChatListener;
 import fr.citedesiles.inscriptionplugin.listener.PlayerJoinListener;
 import fr.citedesiles.inscriptionplugin.listener.ProtectionListener;
+import fr.citedesiles.inscriptionplugin.util.TeamDisplayManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,6 +35,7 @@ public class InscriptionPlugin extends JavaPlugin {
             try {
                 if (api.ping()) {
                     getLogger().info("Connecté à l'API CDI2 : " + apiUrl);
+                    TeamDisplayManager.orderTeamsInScoreboard(api, this);
                 }
             } catch (CoreCDI.ApiException e) {
                 getLogger().warning("Impossible de contacter l'API CDI2 : " + e.getMessage());
