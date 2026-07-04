@@ -25,10 +25,10 @@ messages:
   protection:
     welcome: "&7Bienvenue ! Tu peux faire /link pour lier ton compte à Discord afin de participer à la cité des îles."
 
-# Coordonnées du spawn où les non-OP sont téléportés
+# Coordonnées du spawn
 spawn:
-  x: 0.0
-  y: 90.0
-  z: 0.0
-  yaw: 0.0
+  x: 84.5
+  y: 60.0
+  z: 620.5
+  yaw: 180.0
   pitch: 0.0

@@ -1,5 +1,9 @@
 package fr.citedesiles.inscriptionplugin.listener;
 
+import fr.citedesiles.inscriptionplugin.InscriptionPlugin;
+import fr.citedesiles.inscriptionplugin.config.PluginConfig;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +15,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Bloque toutes les interactions des joueurs non-OP :
@@ -119,6 +124,29 @@ public class ProtectionListener implements Listener {
     public void onCraft(CraftItemEvent e) {
         if (e.getWhoClicked() instanceof Player player && isProtected(player)) {
             e.setCancelled(true);
+        }
+    }
+
+    // --- Téléportation sous la couche 30 ---
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
+        if (player.getLocation().getY() < 30.0) {
+            if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+                return;
+            }
+            InscriptionPlugin plugin = JavaPlugin.getPlugin(InscriptionPlugin.class);
+            PluginConfig config = plugin.getPluginConfig();
+            Location spawn = new Location(
+                    player.getWorld(),
+                    config.getSpawnX(),
+                    config.getSpawnY(),
+                    config.getSpawnZ(),
+                    config.getSpawnYaw(),
+                    config.getSpawnPitch()
+            );
+            player.teleport(spawn);
         }
     }
 }
