@@ -45,6 +45,23 @@ public class UnlinkCommand implements CommandExecutor {
         UUID uuid = player.getUniqueId();
         String prefix = config.getPrefix();
 
+        // Pré-vérification : empêcher le déliage si le joueur est dans une équipe
+        try {
+            fr.citedesiles.coreplugin.Player p = api.getPlayer(uuid.toString());
+            if (p.team() != -1) {
+                MessageUtil.sendPrefixed(player, prefix, config.getUnlinkInTeam());
+                return true;
+            }
+        } catch (CoreCDI.ApiException e) {
+            if (e.getStatusCode() == 404) {
+                MessageUtil.sendPrefixed(player, prefix, config.getUnlinkNotLinked());
+                return true;
+            }
+            // API injoignable : on bloque par sécurité (impossible de vérifier l'équipe)
+            MessageUtil.sendPrefixed(player, prefix, config.getUnlinkError());
+            return true;
+        }
+
         // /unlink confirm
         if (args.length > 0 && args[0].equalsIgnoreCase("confirm")) {
             Long pending = pendingConfirmations.remove(uuid);

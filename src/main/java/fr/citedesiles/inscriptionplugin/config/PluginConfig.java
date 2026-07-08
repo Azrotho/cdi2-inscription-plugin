@@ -78,6 +78,10 @@ public class PluginConfig {
         return msg("messages.unlink.no-pending");
     }
 
+    public String getUnlinkInTeam() {
+        return msg("messages.unlink.in-team");
+    }
+
     public String getNoPermission() {
         return msg("messages.no-permission");
     }
