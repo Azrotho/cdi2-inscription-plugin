@@ -131,13 +131,23 @@ public class PlayerJoinListener implements Listener {
                                                     .append(Component.text(" membres). Invite tes amis à te rejoindre sur Discord !", NamedTextColor.YELLOW));
                                             player.sendMessage(msgIncomplete);
                                         } else {
-                                            Component msgComplete = prefix
-                                                    .append(Component.text(" Ton équipe ", NamedTextColor.GREEN))
-                                                    .append(Component.text(team.name(), NamedTextColor.GOLD))
-                                                    .append(Component.text(" est complète (", NamedTextColor.GREEN))
-                                                    .append(Component.text(members.size() + "/4", NamedTextColor.GOLD))
-                                                    .append(Component.text(" membres). Tout est bon pour participer !", NamedTextColor.GREEN));
-                                            player.sendMessage(msgComplete);
+                                            if (team.verification() == 0) {
+                                                Component msgNotVerified = prefix
+                                                        .append(Component.text(" Ton équipe ", NamedTextColor.YELLOW))
+                                                        .append(Component.text(team.name(), NamedTextColor.GOLD))
+                                                        .append(Component.text(" est complète (", NamedTextColor.YELLOW))
+                                                        .append(Component.text(members.size() + "/4", NamedTextColor.GOLD))
+                                                        .append(Component.text(" membres) mais elle n'est pas vérifiée. Il faut aller ouvrir un ticket sur le discord du cripieclub pour faire vérifier ton équipe auprès d'un modérateur !", NamedTextColor.RED));
+                                                player.sendMessage(msgNotVerified);
+                                            } else {
+                                                Component msgComplete = prefix
+                                                        .append(Component.text(" Ton équipe ", NamedTextColor.GREEN))
+                                                        .append(Component.text(team.name(), NamedTextColor.GOLD))
+                                                        .append(Component.text(" est complète (", NamedTextColor.GREEN))
+                                                        .append(Component.text(members.size() + "/4", NamedTextColor.GOLD))
+                                                        .append(Component.text(" membres). Tout est bon pour participer !", NamedTextColor.GREEN));
+                                                player.sendMessage(msgComplete);
+                                            }
                                         }
                                     });
                                 } catch (Exception e) {
